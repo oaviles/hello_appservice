@@ -1,4 +1,4 @@
-name: 5 Load Test App Service
+name: 3 Load Test App Service
 
 # Controls when the workflow will run
 on: workflow_dispatch
