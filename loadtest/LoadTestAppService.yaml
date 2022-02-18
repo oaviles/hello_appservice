@@ -1,5 +1,5 @@
 version: v0.1
 testName: LoadTestMicroservice
-testPlan: LoadTestFunctionAppPlan.jmx
+testPlan: LoadTestAppServicePlan.jmx
 description: 'Load Test App Service Demo'
 engineInstances: 1
