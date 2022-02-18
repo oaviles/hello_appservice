@@ -1,0 +1,24 @@
+on: workflow_dispatch
+name: Deploy Azure App Service (Bicep)
+jobs:
+  arm-template-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Checkout code
+    - uses: actions/checkout@main
+
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy ARM template
+    - name: Deploy Bicep Template
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+        template: ./IaC/deploy-appservice.bicep
+        # parameters: appName=<Type a unique name for yor webapp>
+        parameters: ./IaC/parameters-appservice.json
