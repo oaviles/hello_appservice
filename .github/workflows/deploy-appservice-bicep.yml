@@ -1,7 +1,7 @@
 on: workflow_dispatch
 name: Deploy Azure App Service (Bicep)
 jobs:
-  arm-template-deploy:
+  appservice-bicep-template-deploy:
     runs-on: ubuntu-latest
     steps:
 
