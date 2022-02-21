@@ -15,8 +15,9 @@ Additional References:
 - Create an ASP.Net Code Web App with ["dotnet new webapp"](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new-sdk-templates#web-options) command
 - [CI/CD Reference](https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel)
 - [Setup DotNet 6](https://github.com/actions/setup-dotnet)
-- [App Service Web App Build Action](https://github.com/marketplace/actions/app-service-web-app-build-action)
 - [Create App Service app using Bicep](https://docs.microsoft.com/en-us/azure/app-service/provision-resource-bicep)
+- [App Service Web App Build Action](https://github.com/marketplace/actions/app-service-web-app-build-action)
+- [GitHub Actions to deploy Java/PHP/ASP.NET/Containers/NodeJS/Python to Azure App Service](https://github.com/Azure/actions-workflow-samples/tree/master/AppService)
 
 ### Check More DevSquad Projects
 * [DevSquad Main Project](https://github.com/microsoft/fast-prototyping)
