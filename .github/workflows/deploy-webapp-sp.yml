@@ -3,7 +3,7 @@ name: 2 Deploy ASP.NET Core Web App to Azure with SP
 on: [workflow_dispatch]
 
 env:
-  AZURE_WEBAPP_NAME: wapp-swoworkshopoa01    # set this to your application's name
+  AZURE_WEBAPP_NAME: wapp-oa01    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
 
