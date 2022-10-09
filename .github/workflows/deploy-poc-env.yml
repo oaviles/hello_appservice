@@ -5,6 +5,8 @@ on:
   
 env:
   AZURE_REGION: eastus2
+  AZURE_WEBAPP_PACKAGE_PATH: '.' 
+  DOTNET_VERSION: '6.0.x' 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,5 +47,30 @@ jobs:
         resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
         template: ./IaC/deploy-appservice.bicep
         # parameters: appName=<Type a unique name for yor webapp>
-        parameters: ./IaC/parameters-appservice.json        
+        parameters: ./IaC/parameters-appservice.json      
+        
+  continuous-integration:
+    runs-on: windows-latest
+    if: ${{ success() }}
+    needs: create-infra-iac
+    steps:
+      # Checkout the repo
+      - uses: actions/checkout@main
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      
+      # Setup .NET Core SDK
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }} 
+      
+      # Run dotnet build and publish
+      - name: dotnet build and publish
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
   
