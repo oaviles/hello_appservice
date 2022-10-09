@@ -23,3 +23,27 @@ jobs:
       with:
         inlineScript: |
           az group create --location ${{ env.AZURE_REGION }} --name ${{ secrets.RESOURCE_GROUP_NAME }}
+          
+  create-infra-iac:
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    needs: create-resource-group
+    steps:
+      # Checkout code
+    - uses: actions/checkout@main
+
+      # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy Bicep template
+    - name: Deploy Bicep Template
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ secrets.RESOURCE_GROUP_NAME }}
+        template: ./IaC/deploy-appservice.bicep
+        # parameters: appName=<Type a unique name for yor webapp>
+        parameters: ./IaC/parameters-appservice.json        
+  
