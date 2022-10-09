@@ -73,4 +73,9 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
+          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ignite2022mx-app
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
   
