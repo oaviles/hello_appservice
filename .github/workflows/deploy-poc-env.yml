@@ -7,6 +7,7 @@ env:
   AZURE_REGION: eastus2
   AZURE_WEBAPP_PACKAGE_PATH: '.' 
   DOTNET_VERSION: '6.0.x' 
+  IGNITE2022MX_ARTIFACT: ignite2022mx-app
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -72,6 +73,34 @@ jobs:
           
       - uses: actions/upload-artifact@v3
         with:
-          name: ignite2022mx-app
+          name: ${{ env.IGNITE2022MX_ARTIFACT }}
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
+          
+    
+  continuous-delivery:
+    runs-on: windows-latest
+    if: ${{ success() }}
+    needs: continuous-integration
+      steps:
+        # Checkout the repo
+        - uses: actions/checkout@main
+        - uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+            
+        - uses: actions/download-artifact@v3
+          with:
+            name: ${{ env.IGNITE2022MX_ARTIFACT }}
+            path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
+            
+         # Deploy to Azure Web apps
+        - name: 'Run Azure webapp deploy action using publish profile credentials'
+          uses: azure/webapps-deploy@v2
+          with: 
+            app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+            package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+      
+        - name: logout
+          run: |
+            az logout
   
