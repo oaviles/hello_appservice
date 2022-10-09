@@ -1,4 +1,4 @@
-name: 2 Deploy ASP.NET Core Web App to Azure with SP
+name: 2 Build and Deploy Web App to Azure (SP)
 
 on: [workflow_dispatch]
 
@@ -8,7 +8,7 @@ env:
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
 
 jobs:
-  build:
+  cicd:
     runs-on: windows-latest
 
     steps:
