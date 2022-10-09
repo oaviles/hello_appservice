@@ -82,6 +82,10 @@ jobs:
     runs-on: windows-latest
     if: ${{ success() }}
     needs: continuous-integration
+    environment:
+      name: 'PoC Env'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      
     steps:
         # Checkout the repo
       - uses: actions/checkout@main
@@ -96,6 +100,7 @@ jobs:
             
          # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
