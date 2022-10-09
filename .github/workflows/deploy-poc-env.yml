@@ -56,10 +56,6 @@ jobs:
     steps:
       # Checkout the repo
       - uses: actions/checkout@main
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       
       # Setup .NET Core SDK
       - name: Setup .NET Core
