@@ -1,0 +1,18 @@
+{
+    "properties": { 
+        "displayName": "<displayName>",
+        "description": "<description>",
+        "mode": "<mode>",
+        "parameters": {
+                <parameters> 
+        },
+        "policyRule": {
+            "if": {
+                <rule>
+            },
+            "then": {
+                "effect": "<effect>"
+            }
+        }
+    }
+}
