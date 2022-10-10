@@ -6,9 +6,10 @@ env:
   AZURE_WEBAPP_NAME: wapp-oa01    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
+  IGNITE2022MX_ARTIFACT: ignite2022mx-app
 
 jobs:
-  cicd:
+  ci:
     runs-on: windows-latest
 
     steps:
@@ -34,6 +35,39 @@ jobs:
           
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.IGNITE2022MX_ARTIFACT }}
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
+          
+  cd:
+    runs-on: windows-latest
+    if: ${{ success() }}
+    needs: ci
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      
+    steps:
+        # Checkout the repo
+      - uses: actions/checkout@main
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+            
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.IGNITE2022MX_ARTIFACT }}
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp
+            
+         # Deploy to Azure Web apps
+      - name: 'Run Azure webapp deploy action using publish profile credentials'
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
